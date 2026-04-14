@@ -12,5 +12,8 @@
 # Environment/secrets — kabhi push mat karo
 **/.env
 **/application-local.properties
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> day-1
