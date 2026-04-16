@@ -1,7 +1,7 @@
-# Maven build output — generated files, push nahi karne
+# Maven build output
 **/target/
 
-# IntelliJ project files — personal IDE settings
+# IntelliJ project files
 **/.idea/
 **/*.iml
 
@@ -9,11 +9,6 @@
 **/.DS_Store
 **/Thumbs.db
 
-# Environment/secrets — kabhi push mat karo
+# Environment/secrets
 **/.env
 **/application-local.properties
-<<<<<<< HEAD
-
-
-=======
->>>>>>> day-1
