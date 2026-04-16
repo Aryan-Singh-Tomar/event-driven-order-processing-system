@@ -2,5 +2,20 @@ spring:
   application:
     name: order-service
 
+  datasource:
+    url: jdbc:postgresql://localhost:5432/orderdb   # (1)
+    username: orderuser                              # (2)
+    password: orderpass                              # (3)
+    driver-class-name: org.postgresql.Driver         # (4)
+
+  jpa:
+    hibernate:
+      ddl-auto: update                               # (5)
+    show-sql: true                                   # (6)
+    properties:
+      hibernate:
+        format_sql: true                             # (7)
+        dialect: org.hibernate.dialect.PostgreSQLDialect  # (8)
+
 server:
   port: 8080
