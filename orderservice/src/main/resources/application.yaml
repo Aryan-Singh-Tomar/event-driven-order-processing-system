@@ -17,5 +17,19 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
+  kafka:
+    bootstrap-servers: localhost:9092            # (1)
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer      # (2)
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer  # (3)
+      properties:
+        spring.json.trusted.packages: "*"        # (4)
+
+
+logging:
+  level:
+    org.apache.kafka: INFO
+    org.springframework.kafka: DEBUG
+
 server:
   port: 8080

@@ -14,6 +14,59 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - order-network
 
+  # ─── Zookeeper ────────────────────────────────────────────
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.4.0    # (2)
+    container_name: order-zookeeper
+    restart: unless-stopped
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181              # (3)
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - order-network
+
+  # ─── Kafka Broker ─────────────────────────────────────────
+  kafka:
+    image: confluentinc/cp-kafka:7.4.0        # (4)
+    container_name: order-kafka
+    restart: unless-stopped
+    depends_on:
+      - zookeeper                              # (5)
+    ports:
+      - "9092:9092"                            # (6)
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181  # (7)
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://kafka:29092  # (8)
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1  # (9)
+    networks:
+      - order-network
+
+  # ─── Kafka UI ─────────────────────────────────────────────
+  kafbat:
+    image: ghcr.io/kafbat/kafka-ui:latest      # (10)
+    container_name: order-kafbat
+    restart: unless-stopped
+    depends_on:
+      - kafka
+    ports:
+      - "8090:8080"                            # (11)
+    environment:
+      DYNAMIC_CONFIG_ENABLED: true
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092  # (12)
+    networks:
+      - order-network
+
+# ─── Volumes & Networks ───────────────────────────────────
 volumes:
   postgres_data:
+
+networks:
+  order-network:                               # (13)
+    driver: bridge
