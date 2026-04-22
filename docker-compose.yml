@@ -17,6 +17,22 @@ services:
     networks:
       - order-network
 
+  # ─── Inventory Service DB ─────────────────────────────────
+  inventory-postgres:
+    image: postgres:15
+    container_name: inventory-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: inventorydb
+      POSTGRES_USER: inventoryuser
+      POSTGRES_PASSWORD: inventorypass
+    ports:
+      - "5433:5432"                        # (1)
+    volumes:
+      - inventory_postgres_data:/var/lib/postgresql/data
+    networks:
+      - order-network
+
   # ─── Zookeeper ────────────────────────────────────────────
   zookeeper:
     image: confluentinc/cp-zookeeper:7.4.0    # (2)
@@ -66,6 +82,7 @@ services:
 # ─── Volumes & Networks ───────────────────────────────────
 volumes:
   postgres_data:
+  inventory_postgres_data:
 
 networks:
   order-network:                               # (13)

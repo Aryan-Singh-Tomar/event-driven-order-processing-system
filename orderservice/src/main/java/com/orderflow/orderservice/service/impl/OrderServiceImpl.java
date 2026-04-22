@@ -18,11 +18,8 @@ import java.time.LocalDateTime;
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
-
     private final OrderRepository orderRepository;
     private final OrderEventPublisher orderEventPublisher;   // (1)
-
-
     @Override
     @Transactional
     public OrderResponse createOrder(CreateOrderRequest request) {
@@ -44,8 +41,6 @@ public class OrderServiceImpl implements OrderService {
         // Step C: Saved Entity → Response DTO
         return mapToResponse(savedOrder);
     }
-
-
 
     // ---- Private helper methods ----
 

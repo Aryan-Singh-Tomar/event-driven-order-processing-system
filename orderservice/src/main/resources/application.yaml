@@ -18,12 +18,13 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
   kafka:
-    bootstrap-servers: localhost:9092            # (1)
+    bootstrap-servers: localhost:9092
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer      # (2)
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer  # (3)
       properties:
-        spring.json.trusted.packages: "*"        # (4)
+        spring.json.trusted.packages: "*"
+        spring.json.add.type.headers: false
 
 
 logging:
